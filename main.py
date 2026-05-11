@@ -1,6 +1,7 @@
 import pandas as pd
 from data_preprocessing import get_prepared_data
-from baseline_models import run_all_baselines
+from baseline_models import run_all_baselines, run_kmeans
+from visualization import plot_clusters
 
 def main():
     print("======================================================")
@@ -38,6 +39,18 @@ def main():
         print("\nResults successfully saved to 'baseline_results.csv'.")
     except Exception as e:
         print(f"An error occurred during model training/evaluation: {e}")
+
+    # 3. Visualization
+    print("\nStep 3: Visualizing the Best Baseline (K-Means)")
+    print("-----------------------------------------------")
+    try:
+        # Re-run K-Means just to get the labels directly for plotting
+        kmeans_labels = run_kmeans(X_scaled, n_clusters=3)
+        plot_clusters(X_scaled, kmeans_labels, model_name="K-Means_k3", method="PCA")
+        plot_clusters(X_scaled, kmeans_labels, model_name="K-Means_k3", method="TSNE")
+        print("Visualizations generated. You can use these in your report.")
+    except Exception as e:
+        print(f"An error occurred during visualization: {e}")
 
 if __name__ == "__main__":
     main()
